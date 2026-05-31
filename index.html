@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>落落的儿童节特别活动 v4.0</title>
+<style>
+body{margin:0;font-family:"Microsoft YaHei",sans-serif;background:linear-gradient(#fff9ef,#ffe9b8);overflow:hidden}
+.page{display:none;height:100vh;justify-content:center;align-items:center;padding:20px}
+.active{display:flex}
+.card{max-width:820px;background:rgba(255,255,255,.9);padding:28px;border-radius:28px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.08)}
+button{padding:12px 22px;border:none;border-radius:14px;background:#ffe08a;font-size:18px;margin:6px}
+.loc{font-size:54px;cursor:pointer;margin:8px;display:inline-block}
+#paw{position:fixed;left:0;top:0;font-size:28px;pointer-events:none;transform:translate(-50%,-50%);z-index:9999}
+.particle{position:fixed;top:-20px;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.gift{display:none;max-width:85vw;max-height:50vh;border-radius:18px;box-shadow:0 0 20px rgba(0,0,0,.15)}
+.fade{animation:fade 1.5s}
+@keyframes fade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+#giftbox{font-size:90px;animation:bounce 1.4s infinite;cursor:pointer}
+@keyframes bounce{50%{transform:translateY(-10px)}}
+</style>
+</head>
+<body>
+
+<div id="paw">🐾</div>
+
+<div class="page active" id="start"><div class="card">
+<h1>🎈特别活动🎈</h1>
+<p>听说完成活动后，会得到一份神秘奖励。</p>
+<button onclick="show('find')">开始</button>
+</div></div>
+
+<div class="page" id="find"><div class="card">
+<h2>第一关：寻找小猫</h2>
+<p>有一只小猫偷偷溜走了，请帮忙找到它。</p>
+
+<div>
+<span class="loc" onclick="clickLoc('box')">📦</span>
+<span class="loc" onclick="clickLoc('toy')">🧸</span>
+<span class="loc" onclick="clickLoc('book')">📚</span>
+<span class="loc" onclick="clickLoc('plant')">🪴</span>
+<span class="loc" onclick="clickLoc('sofa')">🛋️</span>
+<span class="loc" onclick="clickLoc('flower')">🌼</span>
+</div>
+
+<p id="msg">试着寻找线索吧。</p>
+<button id="followBtn" style="display:none" onclick="show('q1')">【跟上小猫】</button>
+</div></div>
+
+<div class="page" id="q1"><div class="card">
+<h2>领取资格确认中…</h2>
+<p>今天是不是儿童节？</p>
+<button onclick="show('q2')">是</button>
+<button onclick="show('q2')">当然是</button>
+</div></div>
+
+<div class="page" id="q2"><div class="card">
+<p>收到礼物会开心吗？</p>
+<button onclick="show('giftboxpage')">会</button>
+<button onclick="show('giftboxpage')">超级会</button>
+</div></div>
+
+<div class="page" id="giftboxpage"><div class="card">
+<h2>认证成功 ✨</h2>
+<p>小猫似乎留下了一份礼物……</p>
+<div id="giftbox" onclick="gift1()">🎁</div>
+</div></div>
+
+<div class="page" id="gift1"><div class="card">
+<h1>🎁 礼物 1 / 2</h1>
+<img id="img1" class="gift" src="gift1.jpg">
+<br><br>
+<button onclick="gift2()">领取下一份礼物 ➜</button>
+</div></div>
+
+<div class="page" id="gift2"><div class="card">
+<h1>🎁 儿童节快乐，落落。</h1>
+<p>谢谢你找到这份礼物。</p>
+<img id="img2" class="gift" src="gift2.jpg">
+<p>愿今天也有好心情 ✨</p>
+</div></div>
+
+<script>
+function show(id){
+document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+
+const data={
+box:["这里没有发现小猫。","纸箱里只有一些零食包装袋。","看来小猫不在这里。","你真的很执着呢。","纸箱已经快被你翻空了。","小猫：别找这里啦！"],
+toy:["这里也没有。","等等……","好像听见了猫叫声。","声音似乎来自花丛附近。"],
+book:["这里有一本翻开的书。","有人似乎记录过小猫路过。","获得线索 +1"],
+plant:["叶子晃了一下。","似乎有什么东西经过。","发现猫爪印！"],
+sofa:["什么都没有。","等等……","找到一根猫毛。"],
+flower:["花丛晃了一下。","似乎有什么东西躲在里面。","喵——","找到小猫啦！🐾","🐾 小猫好感度 +1","小猫蹭了蹭你的手。它似乎想带你去什么地方。"]
+};
+
+let count={box:0,toy:0,book:0,plant:0,sofa:0,flower:0};
+
+function clickLoc(k){
+let arr=data[k];
+let i=Math.min(count[k],arr.length-1);
+document.getElementById('msg').innerText=arr[i];
+count[k]++;
+if(k==="flower" && count[k]>=6){
+document.getElementById('followBtn').style.display='inline-block';
+}
+}
+
+function particles(){
+let a=['✨','⭐','🌟','🎉','🎊','🎈','🐾'];
+for(let i=0;i<140;i++){
+let d=document.createElement('div');
+d.className='particle';
+d.innerText=a[Math.floor(Math.random()*a.length)];
+d.style.left=Math.random()*100+'vw';
+d.style.fontSize=(18+Math.random()*18)+'px';
+d.style.animationDuration=(3+Math.random()*4)+'s';
+document.body.appendChild(d);
+setTimeout(()=>d.remove(),7000);
+}
+}
+
+function gift1(){
+show('gift1');
+particles();
+let g=document.getElementById('img1');
+g.style.display='block'; g.classList.add('fade');
+}
+
+function gift2(){
+show('gift2');
+particles();
+let g=document.getElementById('img2');
+g.style.display='block'; g.classList.add('fade');
+}
+
+const paw=document.getElementById('paw');
+document.addEventListener('mousemove',e=>{paw.style.left=e.clientX+'px';paw.style.top=e.clientY+'px';});
+document.addEventListener('touchmove',e=>{paw.style.left=e.touches[0].clientX+'px';paw.style.top=e.touches[0].clientY+'px';},{passive:true});
+</script>
+</body>
+</html>
