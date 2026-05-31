@@ -31,7 +31,7 @@ button{padding:12px 22px;border:none;border-radius:14px;background:#ffe08a;font-
 <div class="page active" id="start"><div class="card">
 <h1>🎈特别活动🎈</h1>
 <p>听说完成活动后，会得到一份神秘奖励。</p>
-<button onclick="show('find')">开始</button>
+<button onclick="startGame()">开始</button>
 </div></div>
 
 <div class="page" id="find"><div class="card">
@@ -85,6 +85,17 @@ button{padding:12px 22px;border:none;border-radius:14px;background:#ffe08a;font-
 </div></div>
 
 <script>
+function startGame(){
+    let music = document.getElementById("music");
+
+    music.volume = 0.4; // 音量40%
+
+    music.play().catch(err=>{
+        console.log("音乐播放失败", err);
+    });
+
+    show('find');
+}
 function show(id){
 document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
 document.getElementById(id).classList.add('active');
